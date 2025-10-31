@@ -1,0 +1,35 @@
+{
+  "name": "extract-html-classes",
+  "displayName": "Extract HTML Classes",
+  "version": "0.0.1",
+  "publisher": "yourname",
+  "activationEvents": [
+    "onCommand:extension.extractHtmlClasses",
+    "onCommand:extension.extractHtmlClassesToFile"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.extractHtmlClasses",
+        "title": "Extract CSS Classes from HTML"
+      },
+      {
+        "command": "extension.extractHtmlClassesToFile",
+        "title": "Extract CSS Classes (Selection → Save to File)"
+      }
+    ]
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "scripts": {
+    "vscode:prepublish": "tsc -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^24.9.2",
+    "@types/vscode": "^1.80.0",
+    "@vscode/vsce": "^3.6.2",
+    "typescript": "^5.0.0"
+  }
+}
