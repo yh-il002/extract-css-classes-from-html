@@ -1,5 +1,8 @@
 # extract-css-classes-from-html
 
+## VSCode拡張機能
+HTML内の選択した箇所に含まれるcssクラスをクリップボードへ保存する。
+
 ## パブリッシュしてパッケージ化する方法
 npm run vscode:prepublish
 
