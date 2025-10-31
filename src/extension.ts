@@ -10,30 +10,10 @@
 // コマンドパレット (Cmd+Shift+P) で「Extract CSS Classes from HTML」と検索。
 
 import * as vscode from 'vscode';
-import { TextEncoder } from 'util';
 
 export function activate(context: vscode.ExtensionContext) {
-  // 既存: QuickPick に表示する最小版
-  const disposable1 = vscode.commands.registerCommand('extension.extractHtmlClasses', () => {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor) {
-      vscode.window.showErrorMessage('エディタが開かれていません');
-      return;
-    }
-
-    const text = editor.document.getText();
-    const classes = extractClasses(text);
-
-    if (classes.length === 0) {
-      vscode.window.showInformationMessage('クラスは見つかりませんでした');
-      return;
-    }
-
-    vscode.window.showQuickPick(classes, { placeHolder: '抽出されたCSSクラス一覧' });
-  });
-
-  // 新規: 選択範囲のみ → ファイル保存
-  const disposable2 = vscode.commands.registerCommand('extension.extractHtmlClassesToFile', async () => {
+  // クリップボードに保存
+  const disposable = vscode.commands.registerCommand('extension.extractHtmlClassesToClipboard', async () => {
     const editor = vscode.window.activeTextEditor;
     if (!editor) {
       vscode.window.showErrorMessage('エディタが開かれていません');
@@ -54,31 +34,16 @@ export function activate(context: vscode.ExtensionContext) {
       return;
     }
 
-    // 保存ダイアログ
-    const uri = await vscode.window.showSaveDialog({
-      saveLabel: '保存',
-      filters: {
-        'Text Files': ['txt'],
-        'All Files': ['*']
-      },
-      // デフォルトのファイル名例
-      defaultUri: vscode.workspace.workspaceFolders?.[0]
-        ? vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, 'extracted-classes.txt')
-        : undefined
-    });
-    if (!uri) return;
-
     const content = classes.join('\n');
-    const encoder = new TextEncoder();
     try {
-      await vscode.workspace.fs.writeFile(uri, encoder.encode(content));
-      vscode.window.showInformationMessage(`CSSクラスを保存しました: ${uri.fsPath}`);
+      await vscode.env.clipboard.writeText(content);
+      vscode.window.showInformationMessage(`${classes.length}個のCSSクラスをクリップボードにコピーしました`);
     } catch (err: any) {
-      vscode.window.showErrorMessage(`保存に失敗しました: ${err?.message ?? String(err)}`);
+      vscode.window.showErrorMessage(`クリップボードへのコピーに失敗しました: ${err?.message ?? String(err)}`);
     }
   });
 
-  context.subscriptions.push(disposable1, disposable2);
+  context.subscriptions.push(disposable);
 }
 
 // 共通：クラス抽出（重複除去 & ソート）

@@ -4,19 +4,14 @@
   "version": "0.0.1",
   "publisher": "yourname",
   "activationEvents": [
-    "onCommand:extension.extractHtmlClasses",
-    "onCommand:extension.extractHtmlClassesToFile"
+    "onCommand:extension.extractHtmlClassesToClipboard"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "extension.extractHtmlClasses",
-        "title": "Extract CSS Classes from HTML"
-      },
-      {
-        "command": "extension.extractHtmlClassesToFile",
-        "title": "Extract CSS Classes (Selection → Save to File)"
+        "command": "extension.extractHtmlClassesToClipboard",
+        "title": "Extract CSS Classes to Clipboard"
       }
     ]
   },
